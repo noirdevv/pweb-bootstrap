@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DEWA — Hengker Handal</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{ --ink:#111; --paper:#fff; --mute:#6f6f6f; --line:#e4e4e4; --bs-body-font-family:'Manrope',system-ui,sans-serif; }
+  body{ color:var(--ink); background:var(--paper); }
+  .view{ display:none; }
+  .view.active{ display:block; }
+
+  /* ---------- LOGIN ---------- */
+  #login{ min-height:100vh; }
+  .login-form{ max-width:380px; width:100%; }
+  .logo-mark{ width:28px; height:28px; }
+  .login-title{ font-weight:700; font-size:2.4rem; letter-spacing:-.03em; }
+  .btn-social{ border:1px solid var(--line); border-radius:999px; font-size:.8rem; font-weight:500; padding:.65rem 1rem; background:#fff; }
+  .btn-social:hover{ background:#f6f6f6; }
+  .divider{ display:flex; align-items:center; gap:1rem; color:var(--mute); font-size:.75rem; }
+  .divider::before,.divider::after{ content:""; flex:1; border-top:1px solid var(--line); }
+  .form-control.pill{ border-radius:999px; padding:.7rem 1rem; font-size:.85rem; background:#fafafa; }
+  .form-control.pill:focus{ border-color:var(--ink); box-shadow:0 0 0 .2rem rgba(0,0,0,.08); }
+  .btn-ink{ background:var(--ink); color:#fff; border-radius:999px; padding:.75rem 1rem; font-size:.85rem; font-weight:700; border:0; }
+  .btn-ink:hover{ background:#333; color:#fff; }
+  .art{ position:relative; background:#444 url('https://picsum.photos/seed/garden-stone/1000/1400?grayscale') center/cover; filter:contrast(1.35); min-height:100vh; }
+  .art::after{ content:""; position:absolute; inset:0;
+    background-image:radial-gradient(circle,#fff 0.9px,transparent 1.2px), radial-gradient(circle,#000 0.9px,transparent 1.2px);
+    background-size:4px 4px; background-position:0 0,2px 2px; opacity:.45; }
+  .login-foot{ font-size:.7rem; color:var(--mute); }
+  .login-foot a{ color:inherit; text-decoration:none; margin:0 .6rem; }
+
+  /* ---------- CONTENT ---------- */
+  .navbar-brand{ font-weight:800; font-size:1.6rem; letter-spacing:-.02em; }
+  .navbar-brand span, .brand-soft{ color:#9a9a9a; }
+  .nav-link{ font-size:.72rem; letter-spacing:.04em; color:var(--ink); }
+  .hero{ position:relative; min-height:62vh; display:flex; align-items:center; color:var(--ink);
+    background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 45%), #cfd3d6 url('https://picsum.photos/seed/misty-mountain/1800/900?grayscale') center/cover; }
+  .hero h6{ color:#8a8a8a; letter-spacing:.2em; font-weight:500; }
+  .hero h1{ font-weight:800; font-size:clamp(2.4rem,6vw,4.2rem); letter-spacing:.04em; }
+  .hero p{ color:#777; letter-spacing:.18em; font-size:.85rem; }
+  .btn-pill{ background:var(--ink); color:#fff; border-radius:999px; padding:.55rem 1.6rem; font-size:.7rem; font-weight:700; letter-spacing:.1em; border:0; }
+  .btn-pill:hover{ background:#333; color:#fff; }
+  .section-title{ font-weight:800; letter-spacing:.14em; font-size:1.3rem; }
+  .section-title::after{ content:""; display:block; width:28px; border-top:1px solid #bbb; margin-top:.9rem; }
+  .filter .btn{ border-radius:999px; font-size:.68rem; font-weight:700; letter-spacing:.06em; padding:.3rem 1.4rem; border:1px solid var(--ink); }
+  .filter .btn{ background:var(--ink); color:#fff; }
+  .filter .btn.on{ background:#fff; color:var(--ink); }
+  .works{ display:grid; grid-template-columns:repeat(6,1fr); grid-auto-rows:140px; gap:4px; }
+  .works figure{ margin:0; overflow:hidden; background:#222; }
+  .works img{ width:100%; height:100%; object-fit:cover; filter:grayscale(1) contrast(1.1); transition:transform .5s; }
+  .works figure:hover img{ transform:scale(1.05); }
+  .w1{ grid-column:span 2; grid-row:span 2; } .w2{ grid-column:span 2; grid-row:span 4; } .w3{ grid-column:span 2; grid-row:span 3; }
+  .w4{ grid-column:span 2; grid-row:span 2; } .w5{ grid-column:span 1; grid-row:span 2; } .w6{ grid-column:span 1; grid-row:span 2; }
+  .cta h3{ font-weight:700; letter-spacing:.04em; }
+  footer.site{ background:#111; color:#aaa; }
+  .foot-logo{ display:inline-block; border:1px solid #444; padding:.3rem 1.2rem; font-size:1.6rem; font-weight:800; color:#555; }
+  .foot-logo b{ color:#888; }
+  footer .soc a{ color:#ddd; margin:0 .7rem; font-size:.75rem; text-decoration:none; font-weight:700; }
+  @media (max-width:767px){
+    .art{ display:none; }
+    .works{ grid-template-columns:repeat(2,1fr); grid-auto-rows:150px; }
+    .works figure{ grid-column:span 1 !important; grid-row:span 1 !important; }
+    .w2{ grid-row:span 2 !important; }
+  }
+  :focus-visible{ outline:2px solid var(--ink); outline-offset:2px; }
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<main id="login" class="view active">
+  <div class="row g-0 min-vh-100">
+    <div class="col-md-6 d-flex flex-column align-items-center justify-content-between py-5 px-4">
+      <svg class="logo-mark" viewBox="0 0 24 24" fill="#111" aria-label="Logo"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>
+
+      <div class="login-form text-center">
+        <h1 class="login-title mb-2">Selamat datang kembali!</h1>
+        <p class="text-secondary small mb-4">Karyamu, timmu, alurmu — semua di satu tempat.</p>
+
+        <div class="d-flex gap-2 mb-3">
+          <button class="btn btn-social flex-fill" data-enter>Masuk dengan Google</button>
+          <button class="btn btn-social flex-fill" data-enter>Masuk dengan Apple</button>
+        </div>
+        <div class="divider mb-3">atau</div>
+
+        <form id="loginForm" novalidate>
+          <input id="email" type="text" class="form-control pill mb-3" placeholder="Masukkan email atau nama apa saja" autocomplete="off">
+          <div id="err" class="text-danger small mb-2 d-none">Isi kolom ini dulu, lalu coba lagi.</div>
+          <button type="submit" class="btn btn-ink w-100">Masuk</button>
+        </form>
+        <p class="small text-secondary mt-4 mb-0">Belum punya akun? <a href="#" class="text-dark fw-semibold" data-enter>Daftar</a></p>
+      </div>
+
+      <div class="login-foot"><a href="#">Bantuan</a>/<a href="#">Ketentuan</a>/<a href="#">Privasi</a></div>
+    </div>
+    <div class="col-md-6 art" role="img" aria-label="Taman hitam putih dengan pola titik"></div>
+  </div>
+</main>
+
+<!-- ================= CONTENT ================= -->
+<div id="content" class="view">
+  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="#top">DE<span>WA</span></a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-label="Menu"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse justify-content-end" id="nav">
+        <ul class="navbar-nav align-items-lg-center">
+          <li class="nav-item"><a class="nav-link px-3" href="#top">BERANDA</a></li>
+          <li class="nav-item"><a class="nav-link px-3" href="#karya">KARYA</a></li>
+          <li class="nav-item"><a class="nav-link px-3" href="#kontak">KONTAK</a></li>
+          <li class="nav-item ms-lg-3"><button id="logout" class="btn btn-sm btn-outline-dark rounded-pill px-3" style="font-size:.7rem">Keluar</button></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header id="top" class="hero">
+    <div class="container">
+      <h6>HALO!</h6>
+      <h1>KAMI ADALAH DE<span class="brand-soft">WA</span></h1>
+      <p class="mb-5">Hengker Handal.</p>
+      <a href="#kontak" class="btn btn-pill mt-4">HUBUNGI KAMI</a>
+    </div>
+  </header>
+
+  <section id="karya" class="container py-5 my-4">
+    <h2 class="section-title mb-5">KARYA TERBARU</h2>
+    <div class="filter d-flex justify-content-center gap-2 mb-5">
+      <button class="btn on" data-f="foto">Foto</button>
+      <button class="btn" data-f="grafis">Grafis</button>
+      <button class="btn" data-f="web">Web</button>
+    </div>
+    <div class="works">
+      <figure class="w1"><img loading="lazy" src="https://picsum.photos/seed/portrait-a/600/600?grayscale" alt="Karya 1"></figure>
+      <figure class="w2"><img loading="lazy" src="https://picsum.photos/seed/hands-rope/600/1000?grayscale" alt="Karya 2"></figure>
+      <figure class="w3"><img loading="lazy" src="https://picsum.photos/seed/chair-sea/900/700?grayscale" alt="Karya 3"></figure>
+      <figure class="w4"><img loading="lazy" src="https://picsum.photos/seed/child-path/600/600?grayscale" alt="Karya 4"></figure>
+      <figure class="w5"><img loading="lazy" src="https://picsum.photos/seed/window-room/500/700?grayscale" alt="Karya 5"></figure>
+      <figure class="w6"><img loading="lazy" src="https://picsum.photos/seed/boots-lace/500/700?grayscale" alt="Karya 6"></figure>
+    </div>
+  </section>
+
+  <section id="kontak" class="cta text-center py-5 my-4">
+    <div class="container">
+      <h3 class="mb-2">Tertarik bekerja sama dengan kami?</h3>
+      <p class="text-secondary small mb-4" style="letter-spacing:.14em">Ayo ngobrol sekarang!</p>
+      <a href="mailto:halo@DEWA.example" class="btn btn-pill">HUBUNGI KAMI</a>
+    </div>
+  </section>
+
+  <footer class="site text-center py-5">
+    <div class="container py-3">
+      <div class="foot-logo mb-2">DE<b>WA</b></div>
+      <p class="small mb-4" style="letter-spacing:.3em;color:#666">Hengker Handal</p>
+      <div class="soc mb-4"><a href="#">f</a><a href="#">Bē</a><a href="#">t</a><a href="#">in</a><a href="#">ig</a></div>
+      <p class="mb-0" style="font-size:.65rem;color:#666">© 2026 DEWA. Seluruh hak cipta dilindungi.</p>
+    </div>
+  </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const login = document.getElementById('login');
+  const content = document.getElementById('content');
+
+  function show(view){
+    login.classList.toggle('active', view === 'login');
+    content.classList.toggle('active', view === 'content');
+    window.scrollTo(0, 0);
+    document.title = view === 'login' ? 'Masuk — DEWA' : 'DEWA — Hengker Handal';
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const ok = document.getElementById('email').value.trim() !== '';
+    document.getElementById('err').classList.toggle('d-none', ok);
+    if (ok) show('content');
+  });
+
+  document.querySelectorAll('[data-enter]').forEach(el =>
+    el.addEventListener('click', e => { e.preventDefault(); show('content'); }));
+
+  document.getElementById('logout').addEventListener('click', () => {
+    document.getElementById('email').value = '';
+    show('login');
+  });
+
+  document.querySelectorAll('.filter .btn').forEach(b =>
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.filter .btn').forEach(x => x.classList.remove('on'));
+      b.classList.add('on');
+    }));
+</script>
+</body>
+</html>
